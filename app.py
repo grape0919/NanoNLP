@@ -3,9 +3,15 @@ from tkinter import *
 from tkinter import Frame
 from tkinter import filedialog, messagebox
 import os
+from tkinter.font import BOLD
 
 DEFAULT_BGCOLOR = "white"
 TEMP_DIR = os.path.join(os.getcwd(),'table')
+
+GRID_MAX_COL = 7
+
+CHECKBOX_INDEX = {'채언':1, '조사':2}
+
 class MainWindow(Frame):
 
     def __init__(self):
@@ -19,38 +25,28 @@ class MainWindow(Frame):
         self.configure(bg=DEFAULT_BGCOLOR)
         self.centerWindow()
 
-        self.dirPath = StringVar()
+        self.title = Label(self, text='형태소 분석기', font=("Helvetica 18 bold"), background=DEFAULT_BGCOLOR, pady=20)
+        self.title.grid(row=0, column=0, columnspan=2)
 
-        self.dirPathedit = Entry(self, width=32, textvariable=self.dirPath,readonlybackground='ghost white',state='readonly')
-        self.dirPathedit.grid(row = 0, column=0, columnspan=2)
-        
-        selectDir = Button(self, text="폴더 선택", command=self.openDlg)
-        selectDir.grid(row = 0, column=2)
+        self.textField = Text(self, width=70, height=50)
+        self.textField.grid(row = 1, column=0)
 
-        passwdLabel = Label(self, text='password',bg=DEFAULT_BGCOLOR)
-        passwdLabel.grid(row = 1, column=0)
+        checkBoxFrame = Frame(self, background=DEFAULT_BGCOLOR, highlightbackground=DEFAULT_BGCOLOR)
+        self.cheUnLabel = Label(checkBoxFrame, text="채언", background=DEFAULT_BGCOLOR)
+        self.cheUnLabel.grid(row = 1, column=2,  sticky  ="w")
+        self.cheUnCheck_var = BooleanVar()
+        self.cheUnCheck_var.set(False)
+        cheUnCheck = Checkbutton(checkBoxFrame, variable=self.cheUnCheck_var, highlightbackground=DEFAULT_BGCOLOR, background=DEFAULT_BGCOLOR)
+        cheUnCheck.grid(row = 1, column=1, sticky="e")
 
-        self.pwd = StringVar()
-
-        passwd = Entry(self,textvariable=self.pwd, bg='ghost white')
-        passwd.grid(row = 1, column=1)
-
-        self.chNmParam = BooleanVar()
-        self.chNmParam.set(False)
-
-        chNmOption = Checkbutton(self,variable=self.chNmParam, text="이름 변경",bg=DEFAULT_BGCOLOR)
-        chNmOption.grid(row = 2, column=0)
-
-        #0f4c81
-        unzipBtn = Button(self, text="압축 풀기", command=self.unzip, bg='#0f4c81', fg='white')
-        unzipBtn.grid(row = 3, column=0, columnspan=3)
+        checkBoxFrame.grid(row=1, column=1)
 
         self.place(x = 40, y = 20)
 
     def centerWindow(self):
 
-        w = 380
-        h = 150
+        w = 1200
+        h = 800
 
         sw = self.master.winfo_screenwidth()
         sh = self.master.winfo_screenheight()
