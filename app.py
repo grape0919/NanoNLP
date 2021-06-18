@@ -2,6 +2,7 @@ from tkinter import *
 # from tkmacosx import Button
 from tkinter import Frame
 from tkinter import filedialog, messagebox
+from tkinter import font
 from tkinter.ttk import Progressbar
 
 import os
@@ -16,7 +17,7 @@ POINT_BUTTON_COLOR = "#0f4c81"
 TEMP_DIR = os.path.join(os.getcwd(), 'temp')
 
 GRID_MAX_ROW = 4
-GRID_MAX_COL = 7
+GRID_MAX_COL = 2
 
 CHECKBOX_INDEX = ['체언', '용언', '감탄사',
                   '관형사', '부사',
@@ -37,7 +38,7 @@ CHECKBOX_CORDINATE = [(0, 0), (0, 2), (0, 4),
                       (7, 0), (7, 2), (7, 4)]  # row, col
 
 WINDOW_WIDTH = 1100
-WINDOW_HEIGHT = 800
+WINDOW_HEIGHT = 760
 
 TITLE = "국어교육용 형태소 분석기 1.0v"
 
@@ -54,13 +55,12 @@ class MainWindow(Frame):
         self.configure(bg=DEFAULT_BGCOLOR)
         self.centerWindow(self.master, WINDOW_WIDTH, WINDOW_HEIGHT)
 
-        self.title = Label(self, text=TITLE, font=(
-            "Helvetica 18 bold"), background=DEFAULT_BGCOLOR, pady=15)
-        self.title.grid(row=0, column=0, columnspan=2)
+        self.title = Label(self, text=TITLE, background=DEFAULT_BGCOLOR, font=font.Font(size=20, weight=BOLD))
+        self.title.grid(row=0, column=0, columnspan=GRID_MAX_COL, sticky="n")
 
         ## 텍스트 필드
         textFieldFrame = Frame(self, background=DEFAULT_BGCOLOR,
-                              highlightbackground=DEFAULT_BGCOLOR)
+                              highlightbackground=DEFAULT_BGCOLOR, pady=20)
         textFieldScrollbar = Scrollbar(textFieldFrame)
         textFieldScrollbar.grid(row=0, column=1, sticky="sn")
 
@@ -103,7 +103,7 @@ class MainWindow(Frame):
                              background=POINT_BUTTON_COLOR, fg=DEFAULT_BGCOLOR, highlightbackground=DEFAULT_BGCOLOR)
         runBtn.grid(row = 0, column=0)
 
-        processFrame.grid(row = 3, column=1)
+        processFrame.grid(row = 3, column=1, sticky="n")
 
         self.place(x=40, y=20)
 
@@ -137,8 +137,9 @@ class MainWindow(Frame):
                 self.optionCheck_var[i].set(False)
 
     def runProcess(self):
-        self.grab_set = False
-        popup = Toplevel(self.root, )
+        self.master.grab_set()
+        popup = Toplevel(self.root)
+        popup.overrideredirect(1)
         self.root.eval(f'tk::PlaceWindow {str(popup)} center')
         Label(popup, text="형태소 분석중...", width=50, height=2).grid(row=0,column=0)
         progress_var = IntVar()
@@ -151,8 +152,8 @@ class MainWindow(Frame):
             popup.update()
             time.sleep(0.1)
             progress_var.set(i)
-
-        messagebox.showinfo("")
+        popup.destroy()
+        messagebox.showinfo("분석이 완료되었습니다.")
 
 def main():
     root = Tk()
