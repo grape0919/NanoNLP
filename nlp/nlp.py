@@ -1,6 +1,5 @@
 
 from konlpy.tag import Kkma
-import re
 
 import time
 
@@ -9,11 +8,12 @@ class posTagger:
     kkma = Kkma()
 
     @classmethod
-    def pos(self, input:str):
+    def pos(self, input:str) -> list:
         result = self.kkma.pos(input)
         return result
 
-    def splitSentence(inputText:str):
+    @classmethod
+    def splitSentence(inputText:str) -> list:
         ''' inputText to list of sentence. '''
         # return re.split('\.[\s]', inputText)  # 0.07초
         return inputText.replace('\n', ' ').split('. ')   # 0.03초

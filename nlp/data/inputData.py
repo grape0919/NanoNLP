@@ -1,5 +1,6 @@
 
 
+from nlp.nlp import posTagger
 from nlp.data.morphDic import Morph
 from nlp.data.dataImpl import DataImpl
 
@@ -63,3 +64,4 @@ class NNnlpInputEntry(DataImpl):
         #######################
         self.sentenceList = []
         self.morphDic.reset()
+        
