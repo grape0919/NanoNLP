@@ -6,7 +6,7 @@ from tkinter import font
 from tkinter.ttk import Progressbar
 
 import os
-from tkinter.font import BOLD
+from tkinter.font import BOLD, families
 
 import time
 
@@ -55,7 +55,7 @@ class MainWindow(Frame):
         self.configure(bg=DEFAULT_BGCOLOR)
         self.centerWindow(self.master, WINDOW_WIDTH, WINDOW_HEIGHT)
 
-        self.title = Label(self, text=TITLE, background=DEFAULT_BGCOLOR, font=font.Font(size=20, weight=BOLD))
+        self.title = Label(self, text=TITLE, background=DEFAULT_BGCOLOR, font=font.Font(size=20))
         self.title.grid(row=0, column=0, columnspan=GRID_MAX_COL, sticky="n")
 
         ## 텍스트 필드
@@ -92,8 +92,7 @@ class MainWindow(Frame):
                             highlightbackground=DEFAULT_BGCOLOR)
         self.checkAllBtnText = StringVar()
         self.checkAllBtnText.set("전체 선택")
-        checkAllBtn = Button(checkAllBtnFrame, textvariable=self.checkAllBtnText, command=self.checkAll,
-                             background=DEFAULT_BUTTON_COLOR, fg=DEFAULT_BGCOLOR, highlightbackground=DEFAULT_BGCOLOR)
+        checkAllBtn = Button(checkAllBtnFrame, textvariable=self.checkAllBtnText, command=self.checkAll)
         checkAllBtn.grid(row=0, column=0)
         checkAllBtnFrame.grid(row=2, column=1, sticky="wn")
 
@@ -153,7 +152,7 @@ class MainWindow(Frame):
             time.sleep(0.1)
             progress_var.set(i)
         popup.destroy()
-        messagebox.showinfo("분석이 완료되었습니다.")
+        messagebox.showinfo("메세지", "분석이 완료되었습니다.")
 
 def main():
     root = Tk()
