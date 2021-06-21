@@ -1,10 +1,8 @@
 
-
-from nlp.nlp import posTagger
 from nlp.data.morphDic import Morph
 from nlp.data.dataImpl import DataImpl
 
-class NNnlpInputEntry(DataImpl):
+class NNnlpInputEntry():
     inputText = ''
 
     n_letters = 0  # 글자수
@@ -30,12 +28,9 @@ class NNnlpInputEntry(DataImpl):
 
     #######################
 
-    morphDic = Morph()
-
     sentenceList = []
 
-    def __init__(self):
-        print("init inputEntry.")
+    morphDic = Morph()
 
     def reset(self):
         self.inputText = ''

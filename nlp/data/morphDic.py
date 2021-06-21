@@ -2,7 +2,7 @@
 from nlp.data.dataImpl import DataImpl
 
 
-class Morph(DataImpl):
+class Morph():
     MORPH_TYPES = ['NNG', 'NNP', 'NNB', 'NNM', 'NR', 'NP',
                    'VV', 'VA', 'VXV', 'VXA', 'VCP', 'VCN',
                    'MDT', 'MDN', 'MAG', 'MAC',
@@ -18,9 +18,7 @@ class Morph(DataImpl):
     NUM_OF_MORPH_TYPES = len(MORPH_TYPES)
 
     morph_dic = [] # text|morphIndex
-
-    def __init__(self):
-        print("init Morph class")
+    morph_sen = [] 
 
     def reset(self):
         self.morph_dic = []

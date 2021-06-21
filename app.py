@@ -144,7 +144,7 @@ class MainWindow(Frame):
         progress_var = IntVar()
         progress_bar = Progressbar(popup, variable=progress_var, maximum=100, length=300)
         progress_bar.grid(row=1, column=0)#.pack(fill=tk.X, expand=1, side=tk.BOTTOM)
-        popup.pack_slaves()
+        # popup.pack_slaves()
 
         progress_step = 100
         for i in range(1, progress_step):
