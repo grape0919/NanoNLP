@@ -18,7 +18,7 @@ class MainProcess():
             analyzed = posTagger.pos(s)
 
             for tag in analyzed:
-                self.inputData.morphDic.registMorphDic(tag[0] + "|" + tag[1])
+                self.inputData.morphDic.registMorphDic(tag[0], tag[1])
 
 
 
@@ -42,4 +42,4 @@ if __name__=="__main__":
     process.analyze(input)
 
 
-    
+    print(process.inputData.morphDic.morph_dic)

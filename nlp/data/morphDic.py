@@ -24,14 +24,14 @@ class Morph():
         self.morph_dic = []
 
     def morphIndex(self, morph:str):
-        return self.MORPH_TYPES.index(morph)
+        return self.morph_dic.index(morph)
 
     def registMorphDic(self, text:str, morph:str):
         """
         형태소 사전 ("텍스트|형태소") 에 분석된 텍스트와 형태소 등록
         해쉬 맵을 사용하고, INDEX(INT) 를 사용해 메모리 사용량을 줄인다.
         """
-        com = "|".join(text, morph)
+        com = "|".join([text, morph])
         if com in self.morph_dic:
             return self.morphIndex(com)
         else :
