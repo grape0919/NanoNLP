@@ -14,10 +14,14 @@ class MainProcess():
         self.inputData.inputText = inputText
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
         
+        self.inputData.n_lettersIncldSpc = len(inputText)
+        self.inputData.n_letters = len(inputText.replace(' ', ''))
+
         for s in self.inputData.sentenceList:
             analyzed = posTagger.pos(s)
 
             for tag in analyzed:
+                self.inputData.n_morph += 1
                 self.inputData.morphDic.registMorphDic(tag[0], tag[1])
 
 
@@ -42,4 +46,7 @@ if __name__=="__main__":
     process.analyze(input)
 
 
-    print(process.inputData.morphDic.morph_dic)
+    # print(process.inputData.morphDic.morph_dic)
+    print(process.inputData.n_lettersIncldSpc)
+    print(process.inputData.n_letters)
+    print(process.inputData.n_morph)

@@ -36,7 +36,7 @@ class NNnlpInputEntry():
         self.inputText = ''
 
         self.n_letters = 0  # 글자수
-        self.n_eumjeol = 0  # 음절수
+        self.n_lettersIncldSpc = 0  # 글자수 공백포함
         self.n_morph = 0  # 형태소 수 : 전체 형태소 분석 결과 - 부호 수
         self.n_word = 0  # 단어 수 : 체언+용언+관형사+부사+감탄사+조사+어근+한글이외
         self.n_eojeol = 0  # 어절 수 : 띄어쓰기 기준 (이전에는 어절 분석 결과에서 '전체 어절 셀' - '부호 수'로 계량하였음.)
@@ -59,4 +59,7 @@ class NNnlpInputEntry():
         #######################
         self.sentenceList = []
         self.morphDic.reset()
-        
+    
+    def morphCount(self, morph:str):
+        if not "|S" in morph :
+            self.n_morph += 1
