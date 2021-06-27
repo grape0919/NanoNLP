@@ -3,7 +3,6 @@ from abc import ABCMeta
 from nlp.nlp import posTagger
 from nlp.data.inputData import NNnlpInputEntry
 
-
 class MainProcess():
 
     def __init__(self):
@@ -12,8 +11,11 @@ class MainProcess():
     def analyze(self, inputText:str):
         
         self.inputData.inputText = inputText
+        self.inputData.n_paragraph = len(posTagger.splitParagraph(inputText))
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
-        
+        self.inputData.n_sentences = len(self.inputData.sentenceList)
+
+
         self.inputData.n_lettersIncldSpc = len(inputText)
         self.inputData.n_letters = len(inputText.replace(' ', ''))
 
@@ -47,6 +49,11 @@ if __name__=="__main__":
 
 
     # print(process.inputData.morphDic.morph_dic)
-    print(process.inputData.n_lettersIncldSpc)
-    print(process.inputData.n_letters)
-    print(process.inputData.n_morph)
+    print("공백포함 글자수 : ", process.inputData.n_lettersIncldSpc)
+    print("글자수 : ", process.inputData.n_letters)
+    print("형태소 수 : ", process.inputData.n_morph)
+    print("단어 수 : ", process.inputData.n_word)
+    print("어절 수 : ", process.inputData.n_eojeol)
+    print("절 수 : ", process.inputData.n)
+    print("문장 수 : ", process.inputData.n_sentences)
+    print("문단 수 : ", process.inputData.n_paragraph)

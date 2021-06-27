@@ -18,6 +18,12 @@ class posTagger:
         # return re.split('\.[\s]', inputText)  # 0.07초
         return inputText.replace('\n', ' ').split('. ')   # 0.03초
 
+    @classmethod
+    def splitParagraph(self, inputText:str) -> list:
+        ''' inputText to list of sentence. '''
+        paragraphs = inputText.split('\n')
+        return paragraphs
+
 
 if __name__ == '__main__':
     input = '''나는 학생으로서 학교생활을 하며 교칙에 묶여서 생활하는 것에 대한 불만을 품었다.
