@@ -18,10 +18,11 @@ class Morph():
     NUM_OF_MORPH_TYPES = len(MORPH_TYPES)
 
     morph_dic = [] # text|morphIndex
-    morph_sen = [] 
+    morph_sen = {} # morph index:sen index list
 
     def reset(self):
         self.morph_dic = []
+        self.morph_sen = []
 
     def morphIndex(self, morph:str):
         return self.morph_dic.index(morph)
@@ -38,4 +39,17 @@ class Morph():
             self.morph_dic.append(com)
             return self.morphIndex(com)
 
-    
+    def whereRUFrom(self, senIndex:int, morph:str):
+        m_index = self.MORPH_TYPES.index(morph)
+        if m_index in self.morph_sen:
+            senList = self.morph_sen[m_index]
+
+                        print("senList : ", senList)
+            print("morph_sen : ", self.morph_sen )
+            if not senIndex in senList:
+                senList.append(senIndex)
+                self.morph_sen.update({m_index:senList})
+                          
+        else : 
+            senList = [].append(senIndex)
+            self.morph_sen.update({m_index: senList})

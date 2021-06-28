@@ -19,13 +19,13 @@ class MainProcess():
         self.inputData.n_lettersIncldSpc = len(inputText)
         self.inputData.n_letters = len(inputText.replace(' ', ''))
 
-        for s in self.inputData.sentenceList:
+        for i, s in enumerate(self.inputData.sentenceList):
             analyzed = posTagger.pos(s)
 
             for tag in analyzed:
                 self.inputData.n_morph += 1
                 self.inputData.morphDic.registMorphDic(tag[0], tag[1])
-
+                self.inputData.morphDic.whereRUFrom(i, tag[1])
 
 
 if __name__=="__main__":
