@@ -43,8 +43,7 @@ class Morph():
         m_index = self.MORPH_TYPES.index(morph)
         if m_index in self.morph_sen:
             senList = self.morph_sen[m_index]
-
-                        print("senList : ", senList)
+            print("senList : ", senList)
             print("morph_sen : ", self.morph_sen )
             if not senIndex in senList:
                 senList.append(senIndex)
