@@ -21,11 +21,13 @@ class MainProcess():
 
         for i, s in enumerate(self.inputData.sentenceList):
             analyzed = posTagger.pos(s)
-
+            print("analyzed : ", analyzed)
             for tag in analyzed:
                 self.inputData.n_morph += 1
                 self.inputData.morphDic.registMorphDic(tag[0], tag[1])
+                print( "!@#!@# RUForm : ", tag[0], ':', tag[1])
                 self.inputData.morphDic.whereRUFrom(i, tag[1])
+
 
 
 if __name__=="__main__":
