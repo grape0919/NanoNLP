@@ -1,8 +1,7 @@
 
-from abc import ABCMeta
 from nlp.nlp import posTagger
 from nlp.data.inputData import NNnlpInputEntry
-
+from nlp.data.morph import Morph
 class MainProcess():
 
     def __init__(self):
@@ -15,25 +14,87 @@ class MainProcess():
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
         self.inputData.n_sentences = len(self.inputData.sentenceList)
 
-
         self.inputData.n_lettersIncldSpc = len(inputText)
         self.inputData.n_letters = len(inputText.replace(' ', ''))
 
         for i, s in enumerate(self.inputData.sentenceList):
             analyzed = posTagger.pos(s)
-            print("analyzed : ", analyzed)
+            # print("analyzed : ", analyzed)
+            # print("len anal : ", len(analyzed))
+
+            self.inputData.n_eojeol += len(s.split(" "))
+            temp_morph_list = []
             for tag in analyzed:
-                self.inputData.n_morph += 1
-                self.inputData.morphDic.registMorphDic(tag[0], tag[1])
-                print( "!@#!@# RUForm : ", tag[0], ':', tag[1])
+                # 형태소수 카운트
+                if not tag[1] in Morph.부호:
+                    self.inputData.n_morph += 1
+                # 형태소
+                temp_morph_list.append(self.inputData.morphDic.registMorphDic(tag[0], tag[1]))
                 self.inputData.morphDic.whereRUFrom(i, tag[1])
+            
+            self.inputData.morphDic.set_sen_morphs(i, temp_morph_list)
 
 
+        self.count_jeol()
+        self.count_word()
+        self.count_real()
+        self.count_grammar()
+        self.cal_MLU()
+        
+    def count_jeol(self):
+        self.inputData.n_jeol = self.inputData.morphDic.get_morph_cnt("VV")
+        self.inputData.n_jeol += self.inputData.morphDic.get_morph_cnt("VA")
+        self.inputData.n_jeol += self.inputData.morphDic.get_morph_cnt("VCP")
+        self.inputData.n_jeol += self.inputData.morphDic.get_morph_cnt("VCN")
+
+    def count_word(self):
+        temp = 0
+        for m in Morph.체언 + Morph.용언 + Morph.관형사 + Morph.부사 + Morph.조사\
+            + Morph.감탄사 + Morph.어근 + Morph.한글이외:
+            temp += self.inputData.morphDic.get_morph_cnt(m)
+        
+        self.inputData.n_word = temp
+    
+    def count_real(self):
+        temp = 0
+        for m in Morph.체언 + Morph.용언 + Morph.관형사 + Morph.부사\
+            + Morph.감탄사 + Morph.어근 + Morph.한글이외:
+            temp += self.inputData.morphDic.get_morph_cnt(m)
+        
+        self.inputData.n_real_morph = temp
+
+    def count_grammar(self):
+        josa = 0
+        for m in Morph.조사:
+            josa += self.inputData.morphDic.get_morph_cnt(m)
+        self.inputData.n_josa = josa
+        
+        tail = 0
+        for m in Morph.선어말어미 + Morph.어말어미:
+            tail += self.inputData.morphDic.get_morph_cnt(m)
+        self.inputData.n_tail = tail
+
+        temp = 0
+        for m in Morph.접미사 + Morph.접두사 + ["VCP"]:
+            temp += self.inputData.morphDic.get_morph_cnt(m)
+        self.inputData.n_grammar_morph = temp + tail + josa
+
+    def cal_MLU(self):
+        self.inputData.MLU_morph = self.inputData.n_morph / self.inputData.n_sentences
+        self.inputData.MLU_word = self.inputData.n_word / self.inputData.n_sentences
+        self.inputData.MLU_eojeol = self.inputData.n_eojeol / self.inputData.n_sentences
+        self.inputData.MLU_jeol = self.inputData.n_jeol / self.inputData.n_sentences
+
+    def get_analyzed_sen(self, i:int):
+        morphs = self.inputData.morphDic.get_sen_morphs(i)
+        return [self.inputData.morphDic.get_morph(m) for m in morphs]
+            
 
 if __name__=="__main__":
     process = MainProcess()
 
-    input ='''나는 학생으로서 학교생활을 하며 교칙에 묶여서 생활하는 것에 대한 불만을 품었다. 또 ‘우리가 왜 이런 교칙을 지켜야하는가?’에 대한 의문이 생겼다. 실제로 우리가 다니는 학교에는 수많은 교칙들이 있다.
+    input ='''나는 학생으로서 학교생활을 하며 교칙에 묶여서 생활하는 것에 대한 불만을 품었다.
+또 ‘우리가 왜 이런 교칙을 지켜야하는가?’에 대한 의문이 생겼다. 실제로 우리가 다니는 학교에는 수많은 교칙들이 있다.
 대표적인 예로 ‘두발에 대한 규정’, ‘교복착용 및 단정한 모습’등이 있다. 문제가 되는 교칙들을 줄여나가는 노력이 이어지고 있지만 실제로 폐지한 곳은 많지 않다.
 (노컷 뉴스)실제 대전에 있는 한 고등학교에서는 학생들이 자발적으로 교칙에 대하여 폐지를 요구하였지만 받아들여지지 않았다.
 나는 이렇게 학교에서 인권을 침해하고 있다고 생각한다. 또 인권을 침해하는 교칙과 제도가 폐지되어야한다고 생각한다. 첫 번째, ‘두발 규정‘과 ’교복착용 및 단정한 모습‘이라는 교칙의 인권침해와 폐지되어야 하는 이유에 대하여 소개하여 보겠다.
@@ -49,13 +110,26 @@ if __name__=="__main__":
 
     process.analyze(input)
 
-
     # print(process.inputData.morphDic.morph_dic)
     print("공백포함 글자수 : ", process.inputData.n_lettersIncldSpc)
     print("글자수 : ", process.inputData.n_letters)
     print("형태소 수 : ", process.inputData.n_morph)
     print("단어 수 : ", process.inputData.n_word)
     print("어절 수 : ", process.inputData.n_eojeol)
-    print("절 수 : ", process.inputData.n)
+    print("절 수 : ", process.inputData.n_jeol)
     print("문장 수 : ", process.inputData.n_sentences)
     print("문단 수 : ", process.inputData.n_paragraph)
+    print()
+    print("실질 형태소 수 : ", process.inputData.n_real_morph)
+    print("문법 형태소 수 : ", process.inputData.n_grammar_morph)
+    print("조사 수 : ", process.inputData.n_josa)
+    print("어미 수 : ", process.inputData.n_tail)
+    print()
+    print("MLU 형태소 : ", process.inputData.MLU_morph)
+    print("MLU 단어 : ", process.inputData.MLU_word)
+    print("MLU 어절: ", process.inputData.MLU_eojeol)
+    print("MLU 절: ", process.inputData.MLU_jeol)
+
+
+    print()
+    print("result : ", process.get_analyzed_sen(0))

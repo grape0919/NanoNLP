@@ -16,7 +16,7 @@ class posTagger:
     def splitSentence(self, inputText:str) -> list:
         ''' inputText to list of sentence. '''
         # return re.split('\.[\s]', inputText)  # 0.07초
-        return inputText.replace('\n', ' ').split('. ')   # 0.03초
+        return [s+"." for s in inputText.replace('\n', ' ').split('. ')]  # 0.03초
 
     @classmethod
     def splitParagraph(self, inputText:str) -> list:
@@ -43,11 +43,13 @@ if __name__ == '__main__':
 이러한 교칙과 제도의 폐지를 통하여 학생들은 자신의 개성과 생각을 마음껏 드러내며 자신의 목적을 찾아내고 선생님들은 자신이 원하는 수업을 학생들에게 가르치며 진정한 스승이 될 수 있을 것이다.'''
 
     start = time.time()
-    for i in range(10000):
-        for r in posTagger.splitSentence(input):
-            result = posTagger.pos(r)
-            print(result)
-            print(type(result))
+    print(posTagger.splitSentence(input))
+    
+    # for i in range(10000):
+    #     for r in posTagger.splitSentence(input):
+    #         result = posTagger.pos(r)
+    #         print(result)
+    #         print(type(result))
 
     # print('restul : ', len(l_sen))
     print('time : ', time.time() - start)

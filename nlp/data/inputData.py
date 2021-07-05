@@ -30,6 +30,10 @@ class NNnlpInputEntry():
 
     sentenceList = []
 
+    #######################
+
+    all_output = []
+
     morphDic = Morph()
 
     def reset(self):
@@ -58,8 +62,6 @@ class NNnlpInputEntry():
 
         #######################
         self.sentenceList = []
+        self.all_output = []
         self.morphDic.reset()
     
-    def morphCount(self, morph:str):
-        if not "|S" in morph :
-            self.n_morph += 1
