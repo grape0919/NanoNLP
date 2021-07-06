@@ -9,6 +9,7 @@ import os
 from tkinter.font import BOLD, families
 
 import time
+from mainProcess import MainProcess
 
 DEFAULT_BGCOLOR = "white"
 DEFAULT_BUTTON_COLOR = "ghost white"
@@ -48,6 +49,7 @@ class MainWindow(Frame):
         super().__init__()
         self.root = root
         self.initUI()
+        self.nlp = MainProcess()
 
     def initUI(self):
         self.master.title(TITLE)
@@ -140,6 +142,9 @@ class MainWindow(Frame):
         popup = Toplevel(self.root)
         popup.overrideredirect(1)
         self.root.eval(f'tk::PlaceWindow {str(popup)} center')
+
+        self.nlp
+
         Label(popup, text="형태소 분석중...", width=50, height=2).grid(row=0,column=0)
         progress_var = IntVar()
         progress_bar = Progressbar(popup, variable=progress_var, maximum=100, length=300)
