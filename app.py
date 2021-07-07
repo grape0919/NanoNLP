@@ -10,7 +10,8 @@ from tkinter.font import BOLD, families
 
 import time
 from mainProcess import MainProcess
-
+import fileWriter.report as Reporter
+import threading
 DEFAULT_BGCOLOR = "white"
 DEFAULT_BUTTON_COLOR = "ghost white"
 POINT_BUTTON_COLOR = "#0f4c81"
@@ -143,21 +144,28 @@ class MainWindow(Frame):
         popup.overrideredirect(1)
         self.root.eval(f'tk::PlaceWindow {str(popup)} center')
 
-        self.nlp
+        # print(self.textField.get("1.0", "end"))
 
         Label(popup, text="형태소 분석중...", width=50, height=2).grid(row=0,column=0)
-        progress_var = IntVar()
-        progress_bar = Progressbar(popup, variable=progress_var, maximum=100, length=300)
+        progress_bar = Progressbar(popup, orient='horizontal', mode='indeterminate', length=300)
         progress_bar.grid(row=1, column=0)#.pack(fill=tk.X, expand=1, side=tk.BOTTOM)
-        # popup.pack_slaves()
-
-        progress_step = 100
-        for i in range(1, progress_step):
+        progress_bar.start()
+        th = threading.Thread(target=self.nlp.analyze, args=(self.textField.get("1.0", "end"),))
+        th.start()
+        while self.nlp.is_running:
             popup.update()
-            time.sleep(0.1)
-            progress_var.set(i)
+        progress_bar.stop()
+        # popup.pack_slaves()
         popup.destroy()
         messagebox.showinfo("메세지", "분석이 완료되었습니다.")
+
+        wb = Reporter.write_report(self.nlp.inputData)
+
+        filename = filedialog.asksaveasfilename(initialdir=os.getcwd(), title="Save file",
+                                          filetypes=(("Excel files", "*.xlsx"),("all files", "*.*")), defaultextension=".xlsx")
+        if filename:
+            wb.save(filename)
+        
 
 def main():
     root = Tk()

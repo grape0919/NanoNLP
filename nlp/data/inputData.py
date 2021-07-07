@@ -6,6 +6,7 @@ class NNnlpInputEntry():
     inputText = ''
 
     n_letters = 0  # 글자수
+    n_lettersIncldSpc = 0 #공백 포함 글자수
     n_eumjeol = 0  # 음절수
     n_morph = 0  # 형태소 수 : 전체 형태소 분석 결과 - 부호 수
     n_word = 0  # 단어 수 : 체언+용언+관형사+부사+감탄사+조사+어근+한글이외

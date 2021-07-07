@@ -1,7 +1,7 @@
 
 from nlp.data.dataImpl import DataImpl
 
-
+from nlp.data.morph import Morph
 class Morph():
     MORPH_TYPES = ['NNG', 'NNP', 'NNB', 'NNM', 'NR', 'NP',
                    'VV', 'VA', 'VX', 'VXV', 'VXA', 'VCP', 'VCN',
@@ -32,7 +32,13 @@ class Morph():
         self._sen_morphs = {}
 
     def morph_typeIndex(self, morph):
-        return self.MORPH_TYPES.index(morph)
+        try :
+            index = self.MORPH_TYPES.index(morph)
+        except IndexError:
+            print("해당 형태소는 정의되어있지 않습니다. :", morph)
+            index = None
+        finally:
+            return index
 
     def text_morphIndex(self, text:str, morph:str):
         text_morph = "|".join([text, morph])
@@ -41,8 +47,8 @@ class Morph():
         except ValueError:
             self.morph_dic.append(text_morph)
             index = self.morph_dic.index(text_morph)
-
-        return index
+        finally:
+            return index
 
     def registMorphDic(self, text:str, morph:str):
         """
@@ -75,15 +81,26 @@ class Morph():
     def set_sen_morphs(self, i, morph_list:list):
         self._sen_morphs.update({i: morph_list})
 
+    def get_sen_morphs_max_index(self):
+        return max(self._sen_morphs.keys())
+
     def get_sen_morphs(self, i) -> list:
         return self._sen_morphs.get(i)
 
-    def get_morph(self, i:int) -> str:
-        return self.morph_dic[i]
+    def get_morph(self, i:int) -> tuple:
+        temp = self.morph_dic[i].split("|")
+        return temp[0], temp[1]
 
-    def get_morph_cnt(self, morph):
-        cnt = self._morph_cnt.get(self.morph_typeIndex(morph))
-        if cnt:
-            return self._morph_cnt.get(self.morph_typeIndex(morph))
-        else :
+    def get_morph_cnt(self, morph:str):
+        m_index = self.morph_typeIndex(morph)
+        if m_index:
+            try:
+                cnt = self._morph_cnt.get(m_index)
+                if not cnt :
+                    cnt = 0
+            except IndexError:
+                cnt = 0
+            finally:
+                return cnt
+        else:
             return 0

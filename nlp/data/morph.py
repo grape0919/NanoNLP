@@ -1,5 +1,9 @@
 
-class Morph:
+from typing import Dict
+
+
+class Morph():
+    
     체언 = ['NNG', 'NNP', 'NNB', 'NNM', 'NR','NP']
     용언 = ['VV', 'VA', 'VXV', 'VXA', 'VCP', 'VCN']
     관형사 = ['MDT', 'MDN']
@@ -14,3 +18,4 @@ class Morph:
     부호 = ['SF', 'SP', 'SS', 'SE', 'SO', 'SW']
     분석불능 = ['UN', 'UV', 'UE']
     한글이외 = ['OL', 'OH', 'ON']
+    

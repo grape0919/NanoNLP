@@ -4,11 +4,15 @@ from nlp.data.inputData import NNnlpInputEntry
 from nlp.data.morph import Morph
 class MainProcess():
 
+    is_running = False
+
     def __init__(self):
         self.inputData = NNnlpInputEntry()
 
+    
     def analyze(self, inputText:str):
-        
+        self.is_running = True
+        # yield "Ready to analyze"
         self.inputData.inputText = inputText
         self.inputData.n_paragraph = len(posTagger.splitParagraph(inputText))
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
@@ -34,12 +38,13 @@ class MainProcess():
             
             self.inputData.morphDic.set_sen_morphs(i, temp_morph_list)
 
-
         self.count_jeol()
         self.count_word()
         self.count_real()
         self.count_grammar()
         self.cal_MLU()
+
+        self.is_running = False
         
     def count_jeol(self):
         self.inputData.n_jeol = self.inputData.morphDic.get_morph_cnt("VV")
@@ -110,6 +115,7 @@ if __name__=="__main__":
 
     process.analyze(input)
 
+    # print(next(gen))
     # print(process.inputData.morphDic.morph_dic)
     print("공백포함 글자수 : ", process.inputData.n_lettersIncldSpc)
     print("글자수 : ", process.inputData.n_letters)
