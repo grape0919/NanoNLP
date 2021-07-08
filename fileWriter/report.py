@@ -6,6 +6,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 from mainProcess import MainProcess
 from nlp.data.inputData import NNnlpInputEntry
 from nlp.data.morph import Morph
+import os
 
 def draw_style(ws:Worksheet, row, col, option=0):
     fill_color = PatternFill(start_color='FFFFF2CC', end_color='FFFFF2CC', fill_type='solid')
@@ -21,7 +22,7 @@ def draw_style(ws:Worksheet, row, col, option=0):
 
 def write_report(inputData:NNnlpInputEntry) -> Workbook:
 
-    load_wb = load_workbook("./docs/template.xlsx")
+    load_wb = load_workbook(os.path.join(os.getcwd(),"docs/template.xlsx"))
 
     load_ws = load_wb["분석 결과 요약"]
 
