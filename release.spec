@@ -5,10 +5,10 @@ block_cipher = None
 
 
 a = Analysis(['app.py'],
-             pathex=['C:\\Users\\DELL\\PLAYGROUND\\hkdevstudio\\NanoNLP'],
+             pathex=['C:/Users/DELL/PLAYGROUND/hkdevstudio/NanoNLP'],
              binaries=[],
-             datas=[('./docs/*.xlsx','./docs/')],
-             hiddenimports=[],
+             datas=[('./docs/*.xlsx','./docs/'),('C:/Users/DELL/PLAYGROUND/hkdevstudio/NanoNLP/dist/konlpy', './konlpy')],
+             hiddenimports=['konlpy'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
