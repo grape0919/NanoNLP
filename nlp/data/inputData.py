@@ -63,6 +63,7 @@ class NNnlpInputEntry():
 
         #######################
         self.sentenceList = []
+        self.eojeolList = []
         self.all_output = []
         self.morphDic.reset()
     

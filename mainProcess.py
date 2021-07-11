@@ -18,6 +18,8 @@ class MainProcess():
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
         self.inputData.n_sentences = len(self.inputData.sentenceList)
 
+        self.inputData.eojeolList = posTagger.splitEojeol(inputText)
+
         self.inputData.n_lettersIncldSpc = len(inputText)
         self.inputData.n_letters = len(inputText.replace(' ', ''))
 

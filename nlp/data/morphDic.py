@@ -104,3 +104,18 @@ class Morph():
                 return cnt
         else:
             return 0
+
+    def get_morph_sen_cnt(self, morph:str, sen_index):
+        m_index = self.morph_typeIndex(morph)
+        if m_index:
+            try:
+                cnt = 0
+                for s in self.morph_sen.get(m_index):
+                    if sen_index == s:
+                        cnt += 1
+            except IndexError:
+                cnt = 0
+            finally:
+                return cnt
+        else:
+            return 0

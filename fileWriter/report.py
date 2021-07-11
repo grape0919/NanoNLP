@@ -1,4 +1,5 @@
 
+from nlp.nlp import posTagger
 from openpyxl.styles import PatternFill, Border, Side, Alignment, alignment
 from openpyxl.reader.excel import load_workbook
 from openpyxl.workbook.workbook import Workbook
@@ -61,6 +62,13 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
 
             w_row += 1
     
+    #eojeul analy
+    w_row = 6
+    for eojeol in inputData.eojeolList:
+        load_ws.cell(w_row, 12, eojeol)
+        draw_style(load_ws, w_row, 12)
+
+        w_row += 1
 
     w_row = 6
     temp = 0
@@ -170,6 +178,31 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
 
         load_ws.cell(w_row, 21, s)
         draw_style(load_ws, w_row, 21, option=1)
+
+        load_ws.cell(w_row, 22, len(inputData.morphDic.get_sen_morphs(i)))
+        draw_style(load_ws, w_row, 22)
+
+        load_ws.cell(w_row, 23, len(posTagger.splitEojeol(s)))
+        draw_style(load_ws, w_row, 23)
+
+        cnt = 0
+        cnt += inputData.morphDic.get_morph_sen_cnt("VV", i)
+        cnt += inputData.morphDic.get_morph_sen_cnt("VA", i)
+        cnt += inputData.morphDic.get_morph_sen_cnt("VCP", i)
+        cnt += inputData.morphDic.get_morph_sen_cnt("VCN", i)
+        load_ws.cell(w_row, 24, cnt)
+        draw_style(load_ws, w_row, 24)
+        
+        load_ws.cell(w_row, 25, inputData.morphDic.get_morph_sen_cnt("ECE", i))
+        draw_style(load_ws, w_row, 25)
+        load_ws.cell(w_row, 26, inputData.morphDic.get_morph_sen_cnt("ECD", i))
+        draw_style(load_ws, w_row, 26)
+        load_ws.cell(w_row, 27, inputData.morphDic.get_morph_sen_cnt("ECS", i))
+        draw_style(load_ws, w_row, 27)
+        load_ws.cell(w_row, 28, inputData.morphDic.get_morph_sen_cnt("ETN", i))
+        draw_style(load_ws, w_row, 28)
+        load_ws.cell(w_row, 29, inputData.morphDic.get_morph_sen_cnt("ETD", i))
+        draw_style(load_ws, w_row, 29)
 
         w_row += 1
     
