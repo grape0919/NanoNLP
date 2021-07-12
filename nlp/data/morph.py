@@ -36,9 +36,9 @@ class Morph():
                   7:선어말어미,
                   8:어말어미,
                   9:종결어미,
-                  10:연결어미, 11:전성어미,
-                  12:접두사, 13:접미사, 14:어근}
+                  10:연결어미 + 전성어미,
+                  11:접두사, 12:접미사, 13:어근}
 
     @classmethod
-    def get_checkbox_morph_list(self, checkbox_index):
+    def get_checkbox_morph_list(self, checkbox_index:int):
         return Morph.CHECKBOX_MAPPING[checkbox_index]

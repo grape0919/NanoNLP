@@ -173,6 +173,8 @@ class MainWindow(Frame):
         if self.checkAllBtnText.get() == "전체 선택":
             self.checkAllBtnText.set("전체 해제")
             for i in range(len(CHECKBOX_INDEX)):
+                if i == 6 or i == 8:
+                    continue
                 self.optionCheck_var[i].set(True)
         else:
             self.checkAllBtnText.set("전체 선택")
