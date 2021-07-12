@@ -20,7 +20,7 @@ class Morph():
     morph_dic = [] # text|morphIndex
     _morph_cnt = {} # morphIndex|cnt
     morph_sen = {} # morph index:sen index list
-    sen_morphs = {}
+    _sen_morphs = {} 
 
     def __init__(self):
         self.reset()
@@ -110,8 +110,9 @@ class Morph():
         if m_index:
             try:
                 cnt = 0
-                for s in self.morph_sen.get(m_index):
-                    if sen_index == s:
+                for m in self._sen_morphs.get(sen_index):
+                    text, morphIndex = self.get_morph(m)
+                    if self.morph_typeIndex(morphIndex) == m_index:
                         cnt += 1
             except IndexError:
                 cnt = 0

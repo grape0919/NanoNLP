@@ -12,6 +12,9 @@ import time
 from mainProcess import MainProcess
 import fileWriter.report as Reporter
 import threading
+
+from nlp.data.morph import Morph
+
 DEFAULT_BGCOLOR = "white"
 DEFAULT_BUTTON_COLOR = "ghost white"
 POINT_BUTTON_COLOR = "#0f4c81"
@@ -21,20 +24,13 @@ TEMP_DIR = os.path.join(os.getcwd(), 'temp')
 GRID_MAX_ROW = 4
 GRID_MAX_COL = 2
 
-CHECKBOX_INDEX = ['체언', '용언', '감탄사',
-                  '관형사', '부사',
-                  '조사', '어미',
-                  '선어말어미',
-                  '어말어미',
-                  '종결어미(EFN~EFR)',
-                  '연결어미,전성어미(ECE~ETD)',
-                  '접두사', '접미사', '어근']
+CHECKBOX_INDEX = Morph.CHECKBOX_INDEX
 
 CHECKBOX_CORDINATE = [(0, 0), (0, 2), (0, 4),
                       (1, 0), (1, 2),
-                      (2, 0), (1, 2),
+                      (2, 0), (2, 3),
                       (3, 4),
-                      (4, 4),
+                      (4, 5),
                       (5, 6),
                       (6, 6),
                       (7, 0), (7, 2), (7, 4)]  # row, col
@@ -81,13 +77,27 @@ class MainWindow(Frame):
         for i in range(len(CHECKBOX_INDEX)):
             self.optionCheck_var[i] = BooleanVar()
             self.optionCheck_var[i].set(False)
-            Checkbutton(checkBoxFrame, variable=self.optionCheck_var[i],
-                                         highlightbackground=DEFAULT_BGCOLOR, background=DEFAULT_BGCOLOR).grid(row=CHECKBOX_CORDINATE[i][0],
-                                column=CHECKBOX_CORDINATE[i][1], sticky="e")
+            if i == 6:
+                Button(checkBoxFrame, text=CHECKBOX_INDEX[i], command=self.checkTail)\
+                        .grid(row=CHECKBOX_CORDINATE[i][0], column=CHECKBOX_CORDINATE[i][1])
+            elif i == 8:
+                Button(checkBoxFrame, text=CHECKBOX_INDEX[i], command=self.checkTailSub)\
+                        .grid(row=CHECKBOX_CORDINATE[i][0], column=CHECKBOX_CORDINATE[i][1])
+            else:
+                Checkbutton(checkBoxFrame, variable=self.optionCheck_var[i],
+                                            highlightbackground=DEFAULT_BGCOLOR, background=DEFAULT_BGCOLOR).grid(row=CHECKBOX_CORDINATE[i][0],
+                                    column=CHECKBOX_CORDINATE[i][1], sticky="e")
 
-            Label(checkBoxFrame, text=CHECKBOX_INDEX[i],
-                                   background=DEFAULT_BGCOLOR).grid(row=CHECKBOX_CORDINATE[i][0],
-                                column=CHECKBOX_CORDINATE[i][1]+1,  sticky="w")
+                Label(checkBoxFrame, text=CHECKBOX_INDEX[i],
+                                    background=DEFAULT_BGCOLOR).grid(row=CHECKBOX_CORDINATE[i][0],
+                                    column=CHECKBOX_CORDINATE[i][1]+1, sticky="w")
+
+        Label(checkBoxFrame, text='└──',
+                                    background=DEFAULT_BGCOLOR).grid(row=3,
+                                    column=3, sticky="w")
+        Label(checkBoxFrame, text='└──',
+                                    background=DEFAULT_BGCOLOR).grid(row=5,
+                                    column=5, sticky="w")
 
         checkBoxFrame.grid(row=1, column=1)
 
@@ -106,6 +116,10 @@ class MainWindow(Frame):
         runBtn.grid(row = 0, column=0)
 
         processFrame.grid(row = 3, column=1, sticky="n")
+
+        canvas = Canvas(self)
+        canvas.create_line(150, 20, 170, 20)
+
 
         self.place(x=40, y=20)
 
@@ -128,22 +142,11 @@ class MainWindow(Frame):
         self.dirPath.set(filename)
 
 
-    def checkAll(self):
-        if self.checkAllBtnText.get() == "전체 선택":
-            self.checkAllBtnText.set("전체 해제")
-            for i in range(len(CHECKBOX_INDEX)):
-                self.optionCheck_var[i].set(True)
-        else:
-            self.checkAllBtnText.set("전체 선택")
-            for i in range(len(CHECKBOX_INDEX)):
-                self.optionCheck_var[i].set(False)
-
     def runProcess(self):
         self.master.grab_set()
         popup = Toplevel(self.root)
         popup.overrideredirect(1)
         self.root.eval(f'tk::PlaceWindow {str(popup)} center')
-
         # print(self.textField.get("1.0", "end"))
 
         Label(popup, text="형태소 분석중...", width=50, height=2).grid(row=0,column=0)
@@ -159,12 +162,40 @@ class MainWindow(Frame):
         popup.destroy()
         messagebox.showinfo("메세지", "분석이 완료되었습니다.")
 
-        wb = Reporter.write_report(self.nlp.inputData)
+        wb = Reporter.write_report(self.nlp.inputData, self.optionCheck_var)
 
         filename = filedialog.asksaveasfilename(initialdir=os.getcwd(), title="Save file",
                                           filetypes=(("Excel files", "*.xlsx"),("all files", "*.*")), defaultextension=".xlsx")
         if filename:
             wb.save(filename)
+
+    def checkAll(self):
+        if self.checkAllBtnText.get() == "전체 선택":
+            self.checkAllBtnText.set("전체 해제")
+            for i in range(len(CHECKBOX_INDEX)):
+                self.optionCheck_var[i].set(True)
+        else:
+            self.checkAllBtnText.set("전체 선택")
+            for i in range(len(CHECKBOX_INDEX)):
+                self.optionCheck_var[i].set(False)
+
+    def checkTail(self):
+        if self.optionCheck_var[7].get() and self.optionCheck_var[9].get() and self.optionCheck_var[10].get():
+            self.optionCheck_var[7].set(False)
+            self.optionCheck_var[9].set(False)
+            self.optionCheck_var[10].set(False)
+        else:
+            self.optionCheck_var[7].set(True)
+            self.optionCheck_var[9].set(True)
+            self.optionCheck_var[10].set(True)
+
+    def checkTailSub(self):
+        if self.optionCheck_var[9].get() and self.optionCheck_var[10].get():
+            self.optionCheck_var[9].set(False)
+            self.optionCheck_var[10].set(False)
+        else:
+            self.optionCheck_var[9].set(True)
+            self.optionCheck_var[10].set(True)
         
 
 def main():

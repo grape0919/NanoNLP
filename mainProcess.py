@@ -9,10 +9,10 @@ class MainProcess():
     def __init__(self):
         self.inputData = NNnlpInputEntry()
 
-    
     def analyze(self, inputText:str):
         self.is_running = True
         # yield "Ready to analyze"
+        self.inputData.reset()
         self.inputData.inputText = inputText
         self.inputData.n_paragraph = len(posTagger.splitParagraph(inputText))
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
@@ -38,6 +38,7 @@ class MainProcess():
                 temp_morph_list.append(self.inputData.morphDic.registMorphDic(tag[0], tag[1]))
                 self.inputData.morphDic.whereRUFrom(i, tag[1])
             
+            # print("!@#!@# i : ", i ," : ", temp_morph_list)
             self.inputData.morphDic.set_sen_morphs(i, temp_morph_list)
 
         self.count_jeol()
@@ -141,3 +142,4 @@ if __name__=="__main__":
 
     print()
     print("result : ", process.get_analyzed_sen(0))
+    

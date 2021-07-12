@@ -10,7 +10,10 @@ from nlp.data.morph import Morph
 import os
 
 def draw_style(ws:Worksheet, row, col, option=0):
-    fill_color = PatternFill(start_color='FFFFF2CC', end_color='FFFFF2CC', fill_type='solid')
+    if option == 2:
+        fill_color = PatternFill(start_color='FFD9D9D9', end_color='FFD9D9D9', fill_type='solid')
+    else:
+        fill_color = PatternFill(start_color='FFFFF2CC', end_color='FFFFF2CC', fill_type='solid')
     thin_border = Border(left=Side(style='thin'), 
                      right=Side(style='thin'), 
                      top=Side(style='thin'), 
@@ -21,7 +24,7 @@ def draw_style(ws:Worksheet, row, col, option=0):
     if option == 0:
         ws.cell(row, col).alignment = align
 
-def write_report(inputData:NNnlpInputEntry) -> Workbook:
+def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
 
     load_wb = load_workbook(os.path.join(os.getcwd(),"docs/template.xlsx"))
 
@@ -79,6 +82,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.용언:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -86,6 +90,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.관형사:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -93,6 +98,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.부사:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -100,6 +106,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.감탄사:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -107,6 +114,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.조사:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -114,6 +122,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.선어말어미:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -121,6 +130,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.어말어미:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -128,6 +138,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.접두사:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -135,6 +146,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.접미사:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -142,6 +154,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.어근:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -149,6 +162,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.부호:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -156,6 +170,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.분석불능:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -163,6 +178,7 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
 
+    temp = 0
     for m in Morph.한글이외:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
@@ -206,6 +222,54 @@ def write_report(inputData:NNnlpInputEntry) -> Workbook:
 
         w_row += 1
     
+
+    # option
+    for i, ch in enumerate(checkOptions):
+        option_morph_list = []
+        if ch.get():    
+            option_morph_list += Morph.get_checkbox_morph_list(i)
+
+        for  morph in option_morph_list:
+            load_wb.create_sheet(morph)
+            load_sub_ws = load_wb[morph]
+
+            load_sub_ws.cell(1,1,morph)
+            load_sub_ws.cell(3,2,"번호")
+            draw_style(load_sub_ws, 3, 2, option=2)
+            load_sub_ws.cell(3,3,"포함문장")
+            draw_style(load_sub_ws, 3, 3, option=2)
+            load_sub_ws.cell(3,4,"형태소")
+            draw_style(load_sub_ws, 3, 4, option=2)
+            load_sub_ws.cell(3,5,"태그")
+            draw_style(load_sub_ws, 3, 5, option=2)
+            
+
+
+            temp_index = 1
+            row = 4
+            morph_index = inputData.morphDic.morph_typeIndex(morph)
+            sen_list = inputData.morphDic.morph_sen.get(morph_index)
+            if sen_list:
+                for s in sen_list:
+                    morphs_sen = inputData.morphDic.get_sen_morphs(s)
+
+                    for m in morphs_sen:
+                        text, mm= inputData.morphDic.get_morph(m)
+                        if mm.strip() == morph.strip():
+                            load_sub_ws.cell(row, 2, temp_index)
+                            draw_style(load_sub_ws, row, 2)
+                            load_sub_ws.cell(row, 3, inputData.sentenceList[s])
+                            draw_style(load_sub_ws, row, 3, option=1)
+                            load_sub_ws.cell(row, 4, text)
+                            draw_style(load_sub_ws, row, 4)
+                            load_sub_ws.cell(row, 5, morph)
+                            draw_style(load_sub_ws, row, 5)
+
+
+                            row += 1
+                            temp_index +=1
+
+
     print("completed writing report")
     return load_wb
 
