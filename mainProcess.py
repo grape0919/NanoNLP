@@ -17,27 +17,25 @@ class MainProcess():
         self.inputData.inputText = inputText
         self.inputData.n_paragraph = len(posTagger.splitParagraph(inputText))
         self.inputData.sentenceList = posTagger.splitSentence(inputText)
+        print("!@#!@#!@# :::::::::::::: ", self.inputData.sentenceList)
         self.inputData.n_sentences = len(self.inputData.sentenceList)
 
         self.inputData.eojeolList = posTagger.splitEojeol(inputText)
-
+        self.inputData.n_eojeol = len(self.inputData.eojeolList)
         self.inputData.n_lettersIncldSpc = len(inputText)
         self.inputData.n_letters = len(inputText.replace(' ', ''))
 
         for i, s in enumerate(self.inputData.sentenceList):
+            s = s.strip()
             analyzed = posTagger.pos(s)
-            # print("analyzed : ", analyzed)
-            # print("len anal : ", len(analyzed))
-
-            self.inputData.n_eojeol += len(s.split(" "))
             temp_morph_list = []
             for tag in analyzed:
                 # 형태소수 카운트
-                if not tag[1] in Morph.부호:
+                if not tag[1].strip() in Morph.부호:
                     self.inputData.n_morph += 1
                 # 형태소
-                temp_morph_list.append(self.inputData.morphDic.registMorphDic(tag[0], tag[1]))
-                self.inputData.morphDic.whereRUFrom(i, tag[1])
+                temp_morph_list.append(self.inputData.morphDic.registMorphDic(tag[0].strip(), tag[1].strip()))
+                self.inputData.morphDic.whereRUFrom(i, tag[1].strip())
             
             # print("!@#!@# i : ", i ," : ", temp_morph_list)
             self.inputData.morphDic.set_sen_morphs(i, temp_morph_list)

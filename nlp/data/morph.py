@@ -27,7 +27,7 @@ class Morph():
     어근 = ['XR']
     부호 = ['SF', 'SP', 'SS', 'SE', 'SO', 'SW']
     분석불능 = ['UN', 'UV', 'UE']
-    한글이외 = ['OL', 'OH', 'ON']
+    한글이외 = ['OL', 'OH', 'NR']
     
 
     CHECKBOX_MAPPING = {0:체언, 1:용언, 2:감탄사,

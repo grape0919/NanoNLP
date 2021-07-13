@@ -92,8 +92,10 @@ class Morph():
         return temp[0], temp[1]
 
     def get_morph_cnt(self, morph:str):
+        print("!@#!@# morph : ", morph)
         m_index = self.morph_typeIndex(morph)
-        if m_index:
+        print("!@#!@# index : ", m_index)
+        if m_index != None:
             try:
                 cnt = self._morph_cnt.get(m_index)
                 if not cnt :
@@ -101,6 +103,7 @@ class Morph():
             except IndexError:
                 cnt = 0
             finally:
+                print("!@#!@# cnt : ", cnt)
                 return cnt
         else:
             return 0
