@@ -10,6 +10,7 @@ class MainProcess():
         self.inputData = NNnlpInputEntry()
 
     def analyze(self, inputText:str):
+        inputText = inputText.strip()
         self.is_running = True
         # yield "Ready to analyze"
         self.inputData.reset()
