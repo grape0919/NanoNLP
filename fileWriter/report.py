@@ -75,12 +75,14 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
 
     w_row = 6
     temp = 0
+    summ = 0
     for m in Morph.체언:
         c = inputData.morphDic.get_morph_cnt(m)
         load_ws.cell( w_row ,17 ,c)
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.용언:
@@ -89,6 +91,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.관형사:
@@ -97,6 +100,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.부사:
@@ -105,6 +109,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.감탄사:
@@ -113,6 +118,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.조사:
@@ -121,6 +127,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.선어말어미:
@@ -129,6 +136,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.어말어미:
@@ -137,6 +145,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.접두사:
@@ -145,6 +154,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.접미사:
@@ -153,6 +163,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.어근:
@@ -161,6 +172,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.부호:
@@ -169,6 +181,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.분석불능:
@@ -177,6 +190,7 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
 
     temp = 0
     for m in Morph.한글이외:
@@ -185,6 +199,12 @@ def write_report(inputData:NNnlpInputEntry, checkOptions:list) -> Workbook:
         temp += c
         w_row += 1
     load_ws.cell( w_row-1 ,18 ,temp)
+    summ += temp
+
+    load_ws.cell( w_row ,17 ,summ)
+    load_ws.cell( w_row ,18 ,summ)
+
+    w_row += 1
 
     ## 문장
     w_row = 6
